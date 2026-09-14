@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuditDrop - AI-Powered CA Portal | Tax & Ledger Automation</title>
+    <title>AuditDrop Pro - CA Firm AI Tax & Ledger Audit Portal</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -13,17 +13,17 @@
                     colors: {
                         brand: {
                             50: '#f0f7ff',
-                            100: '#e0effe',
                             500: '#0284c7',
                             600: '#0369a1',
                             700: '#075985',
-                            900: '#0c4a6e',
                         },
                         ca: {
-                            dark: '#0f172a',
-                            card: '#1e293b',
+                            dark: '#090d16',
+                            card: '#111827',
+                            border: '#1f2937',
                             accent: '#38bdf8',
-                            emerald: '#10b981'
+                            emerald: '#10b981',
+                            amber: '#f59e0b'
                         }
                     },
                     fontFamily: {
@@ -38,285 +38,376 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #090d16; }
         .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .drag-over {
             border-color: #38bdf8 !important;
-            background-color: rgba(56, 189, 248, 0.08) !important;
+            background-color: rgba(56, 189, 248, 0.1) !important;
             transform: scale(1.01);
         }
-        @keyframes pulse-ring {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 0.4; }
-            100% { transform: scale(0.95); opacity: 0.8; }
+        @keyframes scan-pulse {
+            0% { transform: scale(0.96); opacity: 0.8; }
+            50% { transform: scale(1.04); opacity: 0.3; }
+            100% { transform: scale(0.96); opacity: 0.8; }
         }
-        .animate-scan {
-            animation: pulse-ring 2s infinite ease-in-out;
-        }
+        .animate-scan { animation: scan-pulse 2s infinite ease-in-out; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+<body class="text-slate-100 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
 
-    <!-- Header / Navbar -->
-    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+    <!-- Navbar -->
+    <header class="border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/20">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 via-indigo-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-sky-500/20">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                 </div>
                 <div>
-                    <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-sky-400 bg-clip-text text-transparent">AuditDrop</span>
-                    <span class="ml-2 px-2 py-0.5 text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded-full">CA Portal v1.0</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-sky-400 bg-clip-text text-transparent">AuditDrop Pro</span>
+                        <span class="px-2 py-0.5 text-[10px] font-bold bg-sky-500/10 text-sky-400 border border-sky-500/30 rounded-full uppercase tracking-wider">CA Firm Edition</span>
+                    </div>
                 </div>
             </div>
-            <div class="flex items-center space-x-3">
-                <span class="hidden md:inline-flex items-center px-3 py-1 text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping mr-2"></span>
-                    Q3 Tax Filing Window Open
-                </span>
-                <span class="px-3 py-1 text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 rounded-lg">
+
+            <!-- Due Date Countdown & Assignment Tag -->
+            <div class="hidden md:flex items-center space-x-4">
+                <div class="flex items-center space-x-2 px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-xs">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="text-slate-400">GST R1/3B Due:</span>
+                    <span class="font-bold text-emerald-400 font-mono" id="countdownTimer">15d 04h 22m</span>
+                </div>
+                <span class="px-3 py-1.5 text-xs font-semibold bg-slate-900 text-slate-300 border border-slate-800 rounded-lg">
                     AI Immersion • BE.CSE 2nd Year
                 </span>
             </div>
         </div>
     </header>
 
+    <!-- Main Navigation Tabs -->
+    <div class="border-b border-slate-800/80 bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-2 sm:space-x-6 overflow-x-auto">
+            <button id="tabUpload" class="tab-btn px-4 py-3 text-sm font-bold border-b-2 border-sky-400 text-sky-400 flex items-center space-x-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 0115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                <span>AI Document Drop</span>
+            </button>
+            <button id="tabLedger" class="tab-btn px-4 py-3 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center space-x-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                <span>Client Audit Ledger</span>
+                <span id="ledgerBadgeCount" class="ml-1.5 px-2 py-0.2 text-[10px] bg-slate-800 text-sky-400 rounded-full font-mono">0</span>
+            </button>
+            <button id="tabAnalytics" class="tab-btn px-4 py-3 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center space-x-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span>Tax & ITC Analytics</span>
+            </button>
+        </div>
+    </div>
+
     <!-- Main Container -->
-    <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-10">
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 py-8">
 
-        <!-- Hero Title Banner -->
-        <div class="text-center space-y-3">
-            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-                Client Monthly Document & Ledger Upload
-            </h1>
-            <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
-                Seamlessly upload your monthly purchase bills, receipts, and Excel ledgers. Our AI Vision system automatically extracts invoice details, categorizes expenses, and verifies tax compliance before tax due dates.
-            </p>
-        </div>
-
-        <!-- Upload Form Card -->
-        <div class="glass-panel rounded-2xl p-6 sm:p-8 shadow-2xl shadow-slate-950/50">
-            <form id="uploadForm" class="space-y-6">
-                
-                <!-- Client Name Input -->
-                <div class="space-y-2">
-                    <label for="clientName" class="block text-sm font-semibold text-slate-200">
-                        Client / Business Name <span class="text-sky-400">*</span>
-                    </label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m3 0h1m-1-4h.01M9 16h.01M9 12h.01M9 8h.01M15 16h.01M15 12h.01M15 8h.01"></path>
-                            </svg>
-                        </div>
-                        <input type="text" id="clientName" name="client_name" required
-                            placeholder="e.g. Apex Enterprises Pvt Ltd"
-                            class="w-full pl-11 pr-4 py-3 bg-slate-900/90 border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all">
-                    </div>
-                </div>
-
-                <!-- Drag and Drop Upload Zone -->
-                <div class="space-y-2">
-                    <label class="block text-sm font-semibold text-slate-200">
-                        Upload Monthly Bill, Receipt, or Excel Ledger <span class="text-sky-400">*</span>
-                    </label>
-
-                    <div id="dropZone" 
-                        class="border-2 border-dashed border-slate-700 hover:border-sky-500/70 bg-slate-900/50 rounded-2xl p-8 text-center cursor-pointer transition-all duration-200 group">
-                        
-                        <input type="file" id="fileInput" name="file" accept="image/*,.pdf,.xlsx,.xls,.csv" class="hidden">
-                        
-                        <!-- Default Drop Zone State -->
-                        <div id="dropZoneContent" class="space-y-4">
-                            <div class="w-14 h-14 mx-auto rounded-2xl bg-sky-500/10 group-hover:bg-sky-500/20 text-sky-400 flex items-center justify-center transition-colors">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 0115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-base font-semibold text-slate-200">
-                                    Drag & drop your file here, or <span class="text-sky-400 underline underline-offset-4">browse files</span>
-                                </p>
-                                <p class="text-xs text-slate-400 mt-1">
-                                    Supports PNG, JPG, JPEG, PDF, Excel (.xlsx, .xls) and CSV (Max 25MB)
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Selected File Preview -->
-                        <div id="filePreview" class="hidden flex items-center justify-between bg-slate-800/80 p-4 rounded-xl border border-slate-700 text-left">
-                            <div class="flex items-center space-x-3 truncate">
-                                <div class="w-10 h-10 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                </div>
-                                <div class="truncate">
-                                    <p id="previewFileName" class="text-sm font-medium text-slate-200 truncate">invoice_august.pdf</p>
-                                    <p id="previewFileSize" class="text-xs text-slate-400">1.2 MB</p>
-                                </div>
-                            </div>
-                            <button type="button" id="removeFileBtn" class="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-700/50 rounded-lg transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <button type="submit" id="submitBtn"
-                    class="w-full py-4 px-6 rounded-xl font-bold text-white bg-gradient-to-r from-sky-600 via-sky-500 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 focus:ring-4 focus:ring-sky-500/30 transition-all transform active:scale-[0.99] flex items-center justify-center space-x-2 shadow-lg shadow-sky-500/25">
-                    <svg class="w-5 h-5 text-sky-200 animate-spin hidden" id="spinnerIcon" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <svg class="w-5 h-5 text-sky-200" id="sparkleIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                    <span id="btnText">Submit & Analyze via AI</span>
-                </button>
-            </form>
-        </div>
-
-        <!-- Scanning Simulation State (Hidden by default) -->
-        <div id="loadingState" class="hidden glass-panel rounded-2xl p-8 text-center space-y-6">
-            <div class="relative w-20 h-20 mx-auto">
-                <div class="absolute inset-0 rounded-full bg-sky-500/20 animate-scan"></div>
-                <div class="w-20 h-20 rounded-full bg-sky-500/10 border border-sky-500/30 flex items-center justify-center">
-                    <svg class="w-10 h-10 text-sky-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                    </svg>
-                </div>
-            </div>
-            <div class="space-y-2">
-                <h3 class="text-lg font-bold text-white">Extracting & Analyzing Document with AI...</h3>
-                <p id="loadingStatusStep" class="text-sm text-sky-400 font-medium">Running Gemini Vision OCR & Layout Analysis...</p>
-            </div>
-        </div>
-
-        <!-- Results Section (Hidden by default) -->
-        <section id="resultsSection" class="hidden space-y-6">
+        <!-- ================= TAB 1: UPLOAD & AI EXTRACTION ================= -->
+        <div id="viewUpload" class="space-y-8">
             
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                <div>
-                    <h2 class="text-xl font-bold text-white flex items-center space-x-2">
-                        <span>AI Extraction Analysis Results</span>
-                        <span class="px-2.5 py-0.5 text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">
-                            Verified
-                        </span>
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-0.5" id="processedTimestamp">Processed on --</p>
-                </div>
-                <button id="toggleRawJsonBtn" class="text-xs font-semibold px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-sky-400 border border-slate-700 rounded-lg transition-colors">
-                    View Raw JSON Response
-                </button>
+            <div class="text-center space-y-2">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Client Monthly Bill & Ledger AI Parser</h1>
+                <p class="text-slate-400 text-sm max-w-xl mx-auto">
+                    Upload purchase bills, receipts, or Excel spreadsheets. Our engine dynamically parses real text, numbers, dates, GSTINs, and line items.
+                </p>
             </div>
 
-            <!-- Extraction Cards Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                
-                <!-- Card 1: Vendor Name -->
-                <div class="glass-panel p-5 rounded-xl border border-slate-800 space-y-1">
-                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Vendor Name</p>
-                    <p id="resVendorName" class="text-lg font-bold text-slate-100 truncate">--</p>
-                    <p id="resVendorGstin" class="text-xs text-slate-400 font-mono">GSTIN: --</p>
+            <!-- Upload Card -->
+            <div class="glass-panel rounded-2xl p-6 sm:p-8 shadow-2xl">
+                <form id="uploadForm" class="space-y-6">
+                    
+                    <!-- Client Name Input -->
+                    <div class="space-y-2">
+                        <label for="clientName" class="block text-sm font-semibold text-slate-200">
+                            Client / Business Name <span class="text-sky-400">*</span>
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m3 0h1m-1-4h.01M9 16h.01M9 12h.01M9 8h.01M15 16h.01M15 12h.01M15 8h.01"></path></svg>
+                            </div>
+                            <input type="text" id="clientName" name="client_name" required
+                                placeholder="e.g. Apex Enterprises Pvt Ltd"
+                                class="w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Drag and Drop Box -->
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-slate-200">
+                            Upload Document or Excel Sheet <span class="text-sky-400">*</span>
+                        </label>
+
+                        <div id="dropZone" 
+                            class="border-2 border-dashed border-slate-700 hover:border-sky-500/70 bg-slate-900/60 rounded-2xl p-8 text-center cursor-pointer transition-all duration-200 group">
+                            
+                            <input type="file" id="fileInput" name="file" accept="image/*,.pdf,.xlsx,.xls,.csv,.txt" class="hidden">
+                            
+                            <!-- Default Drop Zone Content -->
+                            <div id="dropZoneContent" class="space-y-3">
+                                <div class="w-14 h-14 mx-auto rounded-2xl bg-sky-500/10 group-hover:bg-sky-500/20 text-sky-400 flex items-center justify-center transition-colors">
+                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 0115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-slate-200">
+                                        Drag & drop file here, or <span class="text-sky-400 underline">browse computer</span>
+                                    </p>
+                                    <p class="text-xs text-slate-400 mt-1">
+                                        Reads PNG, JPG, PDF, Excel (.xlsx, .csv), and Text Bills
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- File Selected Preview -->
+                            <div id="filePreview" class="hidden flex items-center justify-between bg-slate-800/90 p-4 rounded-xl border border-slate-700 text-left">
+                                <div class="flex items-center space-x-3 truncate">
+                                    <div class="w-10 h-10 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                    </div>
+                                    <div class="truncate">
+                                        <p id="previewFileName" class="text-sm font-semibold text-slate-200 truncate">--</p>
+                                        <p id="previewFileSize" class="text-xs text-slate-400">--</p>
+                                    </div>
+                                </div>
+                                <button type="button" id="removeFileBtn" class="p-1.5 text-slate-400 hover:text-rose-400 rounded-lg transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submitBtn"
+                        class="w-full py-4 px-6 rounded-xl font-bold text-white bg-gradient-to-r from-sky-600 via-sky-500 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 focus:ring-4 focus:ring-sky-500/30 transition-all transform active:scale-[0.99] flex items-center justify-center space-x-2 shadow-lg shadow-sky-500/25">
+                        <svg class="w-5 h-5 text-sky-200 animate-spin hidden" id="spinnerIcon" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <svg class="w-5 h-5 text-sky-200" id="sparkleIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <span id="btnText">Submit & Analyze via AI</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Loading Scanner State -->
+            <div id="loadingState" class="hidden glass-panel rounded-2xl p-8 text-center space-y-4">
+                <div class="relative w-16 h-16 mx-auto">
+                    <div class="absolute inset-0 rounded-full bg-sky-500/20 animate-scan"></div>
+                    <div class="w-16 h-16 rounded-full bg-sky-500/10 border border-sky-500/30 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-sky-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-white">Parsing File Contents & Extracting Ledger Entities...</h3>
+                    <p id="loadingStatusStep" class="text-xs text-sky-400 font-mono mt-1">Reading text, dates, numbers & GSTINs...</p>
+                </div>
+            </div>
+
+            <!-- Results Panel -->
+            <section id="resultsSection" class="hidden space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-white flex items-center space-x-2">
+                            <span>Dynamic AI Extraction Results</span>
+                            <span class="px-2 py-0.5 text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">Extracted</span>
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5" id="processedTimestamp">Processed --</p>
+                    </div>
+                    <button id="toggleRawJsonBtn" class="text-xs font-semibold px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-sky-400 border border-slate-700 rounded-lg transition-colors">
+                        View Raw JSON
+                    </button>
                 </div>
 
-                <!-- Card 2: Invoice Date -->
-                <div class="glass-panel p-5 rounded-xl border border-slate-800 space-y-1">
-                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Invoice Date</p>
-                    <p id="resInvoiceDate" class="text-lg font-bold text-slate-100">--</p>
-                    <p id="resInvoiceNo" class="text-xs text-slate-400 font-mono">Inv #: --</p>
-                </div>
-
-                <!-- Card 3: Total Amount -->
-                <div class="glass-panel p-5 rounded-xl border border-slate-800 space-y-1 bg-gradient-to-b from-slate-900 to-emerald-950/20">
-                    <p class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Total Amount</p>
-                    <p id="resTotalAmount" class="text-2xl font-extrabold text-emerald-400">₹ 0.00</p>
-                    <p id="resTaxBreakdown" class="text-xs text-slate-400">CGST + SGST (18%)</p>
-                </div>
-
-                <!-- Card 4: Category & Score -->
-                <div class="glass-panel p-5 rounded-xl border border-slate-800 space-y-1">
-                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Category</p>
-                    <p id="resCategory" class="text-sm font-bold text-sky-400 truncate">--</p>
-                    <div class="flex items-center space-x-1 mt-1">
-                        <span class="text-xs text-slate-400">AI Confidence:</span>
-                        <span id="resConfidence" class="text-xs font-bold text-emerald-400">--</span>
+                <!-- Extraction Summary Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="glass-panel p-4 rounded-xl border border-slate-800 space-y-1">
+                        <p class="text-xs font-semibold text-slate-400 uppercase">Vendor Name</p>
+                        <p id="resVendorName" class="text-base font-bold text-slate-100 truncate">--</p>
+                        <p id="resVendorGstin" class="text-xs text-slate-400 font-mono">GSTIN: --</p>
+                    </div>
+                    <div class="glass-panel p-4 rounded-xl border border-slate-800 space-y-1">
+                        <p class="text-xs font-semibold text-slate-400 uppercase">Invoice Date</p>
+                        <p id="resInvoiceDate" class="text-base font-bold text-slate-100">--</p>
+                        <p id="resInvoiceNo" class="text-xs text-slate-400 font-mono">Inv #: --</p>
+                    </div>
+                    <div class="glass-panel p-4 rounded-xl border border-slate-800 space-y-1 bg-emerald-950/20">
+                        <p class="text-xs font-semibold text-emerald-400 uppercase">Total Amount</p>
+                        <p id="resTotalAmount" class="text-2xl font-extrabold text-emerald-400">₹ 0.00</p>
+                        <p id="resTaxBreakdown" class="text-xs text-slate-400">CGST + SGST (18%)</p>
+                    </div>
+                    <div class="glass-panel p-4 rounded-xl border border-slate-800 space-y-1">
+                        <p class="text-xs font-semibold text-slate-400 uppercase">Category</p>
+                        <p id="resCategory" class="text-sm font-bold text-sky-400 truncate">--</p>
+                        <p id="resConfidence" class="text-xs text-emerald-400 font-semibold">AI Score: --</p>
                     </div>
                 </div>
 
-            </div>
+                <!-- Audit Status Note -->
+                <div id="auditBanner" class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-start space-x-3">
+                    <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div>
+                        <p id="auditStatusTitle" class="text-sm font-bold text-emerald-300">Audit Check Completed</p>
+                        <p id="auditNote" class="text-xs text-emerald-400/90">Verified GSTIN & subtotal calculation.</p>
+                    </div>
+                </div>
 
-            <!-- Audit Status Banner -->
-            <div id="auditBanner" class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-start space-x-3">
-                <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <div class="space-y-0.5">
-                    <p id="auditStatusTitle" class="text-sm font-bold text-emerald-300">Audit Check Passed</p>
-                    <p id="auditNote" class="text-xs text-emerald-400/90">Verified GSTIN & mathematical subtotal accuracy.</p>
+                <!-- Parsed Line Items Table -->
+                <div class="glass-panel rounded-xl overflow-hidden border border-slate-800">
+                    <div class="px-5 py-3 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+                        <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Parsed Line Items</h3>
+                        <span id="clientNameBadge" class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono">Client: --</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-950 text-slate-400 uppercase font-semibold text-[10px] tracking-wider border-b border-slate-800">
+                                <tr>
+                                    <th class="px-4 py-2.5">Item Description</th>
+                                    <th class="px-4 py-2.5 text-center">Qty</th>
+                                    <th class="px-4 py-2.5 text-right">Unit Price</th>
+                                    <th class="px-4 py-2.5 text-right">Total (₹)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lineItemsTbody" class="divide-y divide-slate-800/60"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Raw JSON -->
+                <div id="rawJsonContainer" class="hidden glass-panel rounded-xl p-4 border border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono text-slate-400">JSON Payload</span>
+                        <button id="copyJsonBtn" class="text-xs font-semibold px-2.5 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/30 rounded">Copy JSON</button>
+                    </div>
+                    <pre id="rawJsonPre" class="bg-slate-950 p-4 rounded-lg text-emerald-400 font-mono text-xs overflow-x-auto border border-slate-900 max-h-80"></pre>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ================= TAB 2: CA AUDIT LEDGER & HISTORY ================= -->
+        <div id="viewLedger" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                <div>
+                    <h2 class="text-xl font-bold text-white">Client Audit History & Ledger Database</h2>
+                    <p class="text-xs text-slate-400">View and manage all past client document extractions saved in SQLite database.</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <a href="/export" download class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold flex items-center space-x-1 shadow-lg shadow-emerald-600/20">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <span>Export CSV Ledger</span>
+                    </a>
                 </div>
             </div>
 
-            <!-- Line Items Table -->
+            <!-- Search Bar -->
+            <div class="relative max-w-md">
+                <input type="text" id="ledgerSearchInput" placeholder="Search by Client Name, Vendor, or Category..."
+                    class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                <svg class="w-4 h-4 text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+
+            <!-- Ledger Database Table -->
             <div class="glass-panel rounded-xl overflow-hidden border border-slate-800">
-                <div class="px-5 py-4 border-b border-slate-800 flex items-center justify-between">
-                    <h3 class="text-sm font-bold text-slate-200">Extracted Line Items</h3>
-                    <span id="clientNameBadge" class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md font-mono">Client: --</span>
-                </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs sm:text-sm text-slate-300">
-                        <thead class="bg-slate-900/90 text-slate-400 uppercase font-semibold text-[11px] tracking-wider border-b border-slate-800">
+                    <table class="w-full text-left text-xs text-slate-300">
+                        <thead class="bg-slate-900 text-slate-400 uppercase font-semibold text-[10px] tracking-wider border-b border-slate-800">
                             <tr>
-                                <th class="px-5 py-3">Description / Particulars</th>
-                                <th class="px-5 py-3 text-center">Qty</th>
-                                <th class="px-5 py-3 text-right">Unit Price</th>
-                                <th class="px-5 py-3 text-right">Total (₹)</th>
+                                <th class="px-4 py-3">Client Name</th>
+                                <th class="px-4 py-3">Uploaded File</th>
+                                <th class="px-4 py-3">Vendor / GSTIN</th>
+                                <th class="px-4 py-3">Category</th>
+                                <th class="px-4 py-3 text-right">Total Amount (₹)</th>
+                                <th class="px-4 py-3 text-center">Status</th>
+                                <th class="px-4 py-3 text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="lineItemsTbody" class="divide-y divide-slate-800/60">
-                            <!-- Populated via JS -->
+                        <tbody id="ledgerTbody" class="divide-y divide-slate-800/60">
+                            <tr><td colspan="7" class="px-4 py-8 text-center text-slate-500">Loading audit history...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+        </div>
 
-            <!-- Raw JSON Result View (Toggleable) -->
-            <div id="rawJsonContainer" class="hidden glass-panel rounded-xl p-5 border border-slate-800 space-y-3">
-                <div class="flex items-center justify-between">
-                    <span class="text-xs font-mono text-slate-400">JSON Payload Response (API)</span>
-                    <button id="copyJsonBtn" class="text-xs font-semibold px-3 py-1 bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 rounded-lg transition-colors flex items-center space-x-1">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                        </svg>
-                        <span id="copyBtnText">Copy JSON</span>
-                    </button>
-                </div>
-                <pre class="bg-slate-950 p-4 rounded-lg text-emerald-400 font-mono text-xs overflow-x-auto border border-slate-900 max-h-96" id="rawJsonPre"></pre>
+        <!-- ================= TAB 3: TAX & ITC ANALYTICS ================= -->
+        <div id="viewAnalytics" class="hidden space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <h2 class="text-xl font-bold text-white">CA Firm Tax Liability & ITC Analytics</h2>
+                <p class="text-xs text-slate-400">Overview of total client expenses processed and claimable Input Tax Credit (ITC).</p>
             </div>
 
-        </section>
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="glass-panel p-5 rounded-xl border border-slate-800 space-y-1">
+                    <p class="text-xs font-semibold text-slate-400 uppercase">Total Submissions</p>
+                    <p id="statDocs" class="text-2xl font-extrabold text-white">0</p>
+                </div>
+                <div class="glass-panel p-5 rounded-xl border border-slate-800 space-y-1 bg-sky-950/20">
+                    <p class="text-xs font-semibold text-sky-400 uppercase">Total Audited Amount</p>
+                    <p id="statAmount" class="text-2xl font-extrabold text-sky-400">₹ 0.00</p>
+                </div>
+                <div class="glass-panel p-5 rounded-xl border border-slate-800 space-y-1 bg-emerald-950/20">
+                    <p class="text-xs font-semibold text-emerald-400 uppercase">Claimable ITC (CGST+SGST)</p>
+                    <p id="statITC" class="text-2xl font-extrabold text-emerald-400">₹ 0.00</p>
+                </div>
+            </div>
+
+            <!-- Category Breakdown List -->
+            <div class="glass-panel p-6 rounded-xl border border-slate-800 space-y-4">
+                <h3 class="text-sm font-bold text-slate-200">Category Expense Distribution</h3>
+                <div id="categoryContainer" class="space-y-3">
+                    <p class="text-xs text-slate-500">No category statistics available yet.</p>
+                </div>
+            </div>
+        </div>
 
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-center text-xs text-slate-500 mt-auto">
-        <p>AuditDrop • Designed for Chartered Accountant (CA) Firms • AI Immersion Assignment</p>
+    <footer class="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500 mt-auto">
+        <p>AuditDrop Pro • Designed for Chartered Accountant (CA) Firms • AI Immersion Assignment</p>
     </footer>
 
-    <!-- Frontend Script handling Drag&Drop, Form Submission & Dynamic Response rendering -->
+    <!-- Frontend Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Navigation Tabs ---
+            const tabUpload = document.getElementById('tabUpload');
+            const tabLedger = document.getElementById('tabLedger');
+            const tabAnalytics = document.getElementById('tabAnalytics');
+
+            const viewUpload = document.getElementById('viewUpload');
+            const viewLedger = document.getElementById('viewLedger');
+            const viewAnalytics = document.getElementById('viewAnalytics');
+
+            function setTab(activeBtn, activeView) {
+                [tabUpload, tabLedger, tabAnalytics].forEach(btn => {
+                    btn.classList.remove('border-sky-400', 'text-sky-400');
+                    btn.classList.add('border-transparent', 'text-slate-400');
+                });
+                [viewUpload, viewLedger, viewAnalytics].forEach(v => v.classList.add('hidden'));
+
+                activeBtn.classList.remove('border-transparent', 'text-slate-400');
+                activeBtn.classList.add('border-sky-400', 'text-sky-400');
+                activeView.classList.remove('hidden');
+
+                if (activeView === viewLedger) loadLedgerHistory();
+                if (activeView === viewAnalytics) loadAnalytics();
+            }
+
+            tabUpload.addEventListener('click', () => setTab(tabUpload, viewUpload));
+            tabLedger.addEventListener('click', () => setTab(tabLedger, viewLedger));
+            tabAnalytics.addEventListener('click', () => setTab(tabAnalytics, viewAnalytics));
+
+            // --- Drag & Drop Setup ---
             const dropZone = document.getElementById('dropZone');
             const dropZoneContent = document.getElementById('dropZoneContent');
             const fileInput = document.getElementById('fileInput');
@@ -335,62 +426,24 @@
             const loadingStatusStep = document.getElementById('loadingStatusStep');
             const resultsSection = document.getElementById('resultsSection');
 
-            const resVendorName = document.getElementById('resVendorName');
-            const resVendorGstin = document.getElementById('resVendorGstin');
-            const resInvoiceDate = document.getElementById('resInvoiceDate');
-            const resInvoiceNo = document.getElementById('resInvoiceNo');
-            const resTotalAmount = document.getElementById('resTotalAmount');
-            const resTaxBreakdown = document.getElementById('resTaxBreakdown');
-            const resCategory = document.getElementById('resCategory');
-            const resConfidence = document.getElementById('resConfidence');
+            ['dragenter', 'dragover'].forEach(e => dropZone.addEventListener(e, (evt) => {
+                evt.preventDefault(); dropZone.classList.add('drag-over');
+            }));
+            ['dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, (evt) => {
+                evt.preventDefault(); dropZone.classList.remove('drag-over');
+            }));
 
-            const auditNote = document.getElementById('auditNote');
-            const clientNameBadge = document.getElementById('clientNameBadge');
-            const processedTimestamp = document.getElementById('processedTimestamp');
-            const lineItemsTbody = document.getElementById('lineItemsTbody');
-
-            const toggleRawJsonBtn = document.getElementById('toggleRawJsonBtn');
-            const rawJsonContainer = document.getElementById('rawJsonContainer');
-            const rawJsonPre = document.getElementById('rawJsonPre');
-            const copyJsonBtn = document.getElementById('copyJsonBtn');
-            const copyBtnText = document.getElementById('copyBtnText');
-
-            let lastJsonResponse = null;
-
-            // --- Drag & Drop Handlers ---
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dropZone.classList.add('drag-over');
-                }, false);
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dropZone.classList.remove('drag-over');
-                }, false);
-            });
-
-            dropZone.addEventListener('click', () => {
-                fileInput.click();
-            });
+            dropZone.addEventListener('click', () => fileInput.click());
 
             dropZone.addEventListener('drop', (e) => {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                if (files && files.length > 0) {
-                    fileInput.files = files;
-                    updateFilePreview(files[0]);
+                if (e.dataTransfer.files.length > 0) {
+                    fileInput.files = e.dataTransfer.files;
+                    updateFilePreview(e.dataTransfer.files[0]);
                 }
             });
 
-            fileInput.addEventListener('change', (e) => {
-                if (fileInput.files && fileInput.files.length > 0) {
-                    updateFilePreview(fileInput.files[0]);
-                }
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) updateFilePreview(fileInput.files[0]);
             });
 
             removeFileBtn.addEventListener('click', (e) => {
@@ -402,96 +455,59 @@
 
             function updateFilePreview(file) {
                 previewFileName.textContent = file.name;
-                
-                let sizeStr = '';
-                if (file.size < 1024) sizeStr = file.size + ' B';
-                else if (file.size < 1024 * 1024) sizeStr = (file.size / 1024).toFixed(1) + ' KB';
-                else sizeStr = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
-
-                previewFileSize.textContent = sizeStr;
+                let sz = file.size < 1024 ? file.size + ' B' : file.size < 1024*1024 ? (file.size/1024).toFixed(1) + ' KB' : (file.size/(1024*1024)).toFixed(2) + ' MB';
+                previewFileSize.textContent = sz;
                 dropZoneContent.classList.add('hidden');
                 filePreview.classList.remove('hidden');
             }
 
-            // --- Form Submission Handler (Fetch API) ---
+            // --- Form Submission (Fetch API) ---
+            let lastJson = null;
+
             uploadForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-
                 const clientName = document.getElementById('clientName').value.trim();
                 const file = fileInput.files[0];
 
-                if (!clientName) {
-                    alert('Please enter the Client / Business Name.');
+                if (!clientName || !file) {
+                    alert('Please provide both Client Name and a Document file.');
                     return;
                 }
 
-                if (!file) {
-                    alert('Please select or drop a file to upload.');
-                    return;
-                }
-
-                // Prepare FormData
                 const formData = new FormData();
                 formData.append('client_name', clientName);
                 formData.append('file', file);
 
-                // Update UI to Loading State
-                setLoadingUI(true);
+                setLoading(true);
                 resultsSection.classList.add('hidden');
                 loadingState.classList.remove('hidden');
 
-                // Simulate scanning message updates
-                const steps = [
-                    "Scanning document layout & OCR text...",
-                    "Extracting tax entities & line items...",
-                    "Cross-verifying GSTIN & calculating subtotals...",
-                    "Finalizing JSON ledger payload..."
-                ];
-                let stepIdx = 0;
-                const stepInterval = setInterval(() => {
-                    stepIdx = (stepIdx + 1) % steps.length;
-                    loadingStatusStep.textContent = steps[stepIdx];
-                }, 400);
-
                 try {
-                    const response = await fetch('/upload', {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    clearInterval(stepInterval);
-
-                    if (!response.ok) {
-                        const errData = await response.json().catch(() => ({}));
-                        throw new Error(errData.detail || `Server returned status ${response.status}`);
+                    const res = await fetch('/upload', { method: 'POST', body: formData });
+                    if (!res.ok) {
+                        const err = await res.json().catch(() => ({}));
+                        throw new Error(err.detail || 'Server error during upload');
                     }
-
-                    const data = await response.json();
-                    lastJsonResponse = data;
-
-                    // Display results dynamically
+                    const data = await res.json();
+                    lastJson = data;
                     renderResults(data);
+                    loadLedgerHistory();
 
-                } catch (error) {
-                    console.error('Upload Error:', error);
-                    alert(`Upload & AI Extraction Failed: ${error.message}`);
+                } catch (err) {
+                    alert(`Extraction Error: ${err.message}`);
                 } finally {
-                    clearInterval(stepInterval);
-                    setLoadingUI(false);
+                    setLoading(false);
                     loadingState.classList.add('hidden');
                 }
             });
 
-            function setLoadingUI(isLoading) {
+            function setLoading(isLoading) {
+                submitBtn.disabled = isLoading;
                 if (isLoading) {
-                    submitBtn.disabled = true;
-                    submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
                     spinnerIcon.classList.remove('hidden');
                     sparkleIcon.classList.add('hidden');
-                    btnText.textContent = "Analyzing with AI...";
+                    btnText.textContent = "Parsing & Extracting...";
                 } else {
-                    submitBtn.disabled = false;
-                    submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
                     spinnerIcon.classList.add('hidden');
                     sparkleIcon.classList.remove('hidden');
                     btnText.textContent = "Submit & Analyze via AI";
@@ -504,69 +520,148 @@
                 const tax = ext.tax_details || {};
                 const flags = ext.audit_flags || {};
 
-                resVendorName.textContent = ext.vendor_name || 'N/A';
-                resVendorGstin.textContent = `GSTIN: ${ext.vendor_gstin || 'N/A'}`;
-                resInvoiceDate.textContent = ext.invoice_date || 'N/A';
-                resInvoiceNo.textContent = `Inv #: ${ext.invoice_number || 'N/A'}`;
+                document.getElementById('resVendorName').textContent = ext.vendor_name || 'N/A';
+                document.getElementById('resVendorGstin').textContent = `GSTIN: ${ext.vendor_gstin || 'N/A'}`;
+                document.getElementById('resInvoiceDate').textContent = ext.invoice_date || 'N/A';
+                document.getElementById('resInvoiceNo').textContent = `Inv #: ${ext.invoice_number || 'N/A'}`;
                 
-                const amt = ext.total_amount ? ext.total_amount.toLocaleString('en-IN', { minimumFractionDigits: 2 }) : '0.00';
-                resTotalAmount.textContent = `₹ ${amt}`;
-                resTaxBreakdown.textContent = `CGST ₹${tax.cgst || 0} + SGST ₹${tax.sgst || 0} (${tax.gst_rate || '18%'})`;
+                const totalFormatted = ext.total_amount ? ext.total_amount.toLocaleString('en-IN', {minimumFractionDigits: 2}) : '0.00';
+                document.getElementById('resTotalAmount').textContent = `₹ ${totalFormatted}`;
+                document.getElementById('resTaxBreakdown').textContent = `CGST ₹${tax.cgst||0} + SGST ₹${tax.sgst||0} (${tax.gst_rate||'18%'})`;
 
-                resCategory.textContent = ext.category || 'General Expense';
-                resConfidence.textContent = ext.confidence_score ? `${(ext.confidence_score * 100).toFixed(1)}%` : '98.5%';
+                document.getElementById('resCategory').textContent = ext.category || 'General';
+                document.getElementById('resConfidence').textContent = `AI Score: ${((ext.confidence_score||0.98)*100).toFixed(1)}%`;
 
-                auditNote.textContent = flags.audit_note || 'Reconciliation completed successfully.';
-                clientNameBadge.textContent = `Client: ${info.client_name || 'N/A'}`;
-                processedTimestamp.textContent = `Processed on ${new Date(data.processed_at).toLocaleString()}`;
+                document.getElementById('auditNote').textContent = flags.audit_note || 'Parsed successfully.';
+                document.getElementById('clientNameBadge').textContent = `Client: ${info.client_name}`;
+                document.getElementById('processedTimestamp').textContent = `Processed on ${new Date().toLocaleString()}`;
 
-                // Populate Line Items
-                lineItemsTbody.innerHTML = '';
-                const items = ext.line_items || [];
-                if (items.length === 0) {
-                    lineItemsTbody.innerHTML = `<tr><td colspan="4" class="px-5 py-4 text-center text-slate-500">No explicit line items parsed.</td></tr>`;
-                } else {
-                    items.forEach(item => {
-                        const tr = document.createElement('tr');
-                        tr.className = 'hover:bg-slate-800/40 transition-colors';
-                        tr.innerHTML = `
-                            <td class="px-5 py-3.5 font-medium text-slate-200">${item.item}</td>
-                            <td class="px-5 py-3.5 text-center text-slate-400">${item.qty}</td>
-                            <td class="px-5 py-3.5 text-right font-mono text-slate-400">₹ ${item.unit_price.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                            <td class="px-5 py-3.5 text-right font-mono font-semibold text-emerald-400">₹ ${item.total.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                        `;
-                        lineItemsTbody.appendChild(tr);
-                    });
-                }
+                const lineTbody = document.getElementById('lineItemsTbody');
+                lineTbody.innerHTML = '';
+                (ext.line_items || []).forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-900/60';
+                    tr.innerHTML = `
+                        <td class="px-4 py-2.5 font-medium text-slate-200">${item.item}</td>
+                        <td class="px-4 py-2.5 text-center text-slate-400">${item.qty}</td>
+                        <td class="px-4 py-2.5 text-right font-mono text-slate-400">₹ ${item.unit_price.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+                        <td class="px-4 py-2.5 text-right font-mono font-bold text-emerald-400">₹ ${item.total.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+                    `;
+                    lineTbody.appendChild(tr);
+                });
 
-                // Render Raw JSON
-                rawJsonPre.textContent = JSON.stringify(data, null, 2);
-
-                // Show Results Section
+                document.getElementById('rawJsonPre').textContent = JSON.stringify(data, null, 2);
                 resultsSection.classList.remove('hidden');
-                resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
             }
 
-            // Raw JSON Toggle
-            toggleRawJsonBtn.addEventListener('click', () => {
-                rawJsonContainer.classList.toggle('hidden');
-                toggleRawJsonBtn.textContent = rawJsonContainer.classList.contains('hidden') 
-                    ? 'View Raw JSON Response' 
-                    : 'Hide Raw JSON Response';
+            // Raw JSON Toggle & Copy
+            document.getElementById('toggleRawJsonBtn').addEventListener('click', () => {
+                document.getElementById('rawJsonContainer').classList.toggle('hidden');
             });
-
-            // Copy JSON to Clipboard
-            copyJsonBtn.addEventListener('click', () => {
-                if (lastJsonResponse) {
-                    navigator.clipboard.writeText(JSON.stringify(lastJsonResponse, null, 2)).then(() => {
-                        copyBtnText.textContent = 'Copied!';
-                        setTimeout(() => { copyBtnText.textContent = 'Copy JSON'; }, 2000);
-                    }).catch(err => {
-                        console.error('Copy failed:', err);
-                    });
+            document.getElementById('copyJsonBtn').addEventListener('click', () => {
+                if (lastJson) {
+                    navigator.clipboard.writeText(JSON.stringify(lastJson, null, 2));
+                    document.getElementById('copyJsonBtn').textContent = 'Copied!';
+                    setTimeout(() => document.getElementById('copyJsonBtn').textContent = 'Copy JSON', 2000);
                 }
             });
 
+            // --- Database History Functions ---
+            async function loadLedgerHistory(searchQuery = '') {
+                try {
+                    const url = searchQuery ? `/history?search=${encodeURIComponent(searchQuery)}` : '/history';
+                    const res = await fetch(url);
+                    const json = await res.json();
+                    const data = json.data || [];
+
+                    document.getElementById('ledgerBadgeCount').textContent = data.length;
+
+                    const tbody = document.getElementById('ledgerTbody');
+                    tbody.innerHTML = '';
+
+                    if (data.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-6 text-center text-slate-500">No client audit history found.</td></tr>`;
+                        return;
+                    }
+
+                    data.forEach(item => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'hover:bg-slate-900/50';
+                        tr.innerHTML = `
+                            <td class="px-4 py-3 font-semibold text-white">${item.client_name}</td>
+                            <td class="px-4 py-3 text-slate-400">${item.filename} <span class="text-[10px] text-slate-500">(${item.file_size})</span></td>
+                            <td class="px-4 py-3 font-mono text-slate-300">${item.vendor_name}<br><span class="text-[10px] text-slate-500">${item.vendor_gstin}</span></td>
+                            <td class="px-4 py-3 text-sky-400">${item.category}</td>
+                            <td class="px-4 py-3 text-right font-mono font-bold text-emerald-400">₹ ${item.total_amount.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+                            <td class="px-4 py-3 text-center">
+                                <span class="px-2 py-0.5 text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">${item.audit_status}</span>
+                            </td>
+                            <td class="px-4 py-3 text-right">
+                                <button onclick="deleteEntry(${item.id})" class="text-rose-400 hover:text-rose-300 font-semibold text-xs">Delete</button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+
+                } catch (err) {
+                    console.error('History load error:', err);
+                }
+            }
+
+            window.deleteEntry = async function(id) {
+                if (confirm('Are you sure you want to delete this submission entry?')) {
+                    await fetch(`/submission/${id}`, { method: 'DELETE' });
+                    loadLedgerHistory();
+                }
+            };
+
+            // Search listener
+            document.getElementById('ledgerSearchInput').addEventListener('input', (e) => {
+                loadLedgerHistory(e.target.value.trim());
+            });
+
+            // --- Analytics Load ---
+            async function loadAnalytics() {
+                try {
+                    const res = await fetch('/analytics');
+                    const data = await res.json();
+
+                    document.getElementById('statDocs').textContent = data.total_documents_processed || 0;
+                    document.getElementById('statAmount').textContent = `₹ ${(data.total_amount_audited || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+                    document.getElementById('statITC').textContent = `₹ ${(data.total_input_tax_credit || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+
+                    const catContainer = document.getElementById('categoryContainer');
+                    catContainer.innerHTML = '';
+
+                    const cats = data.category_breakdown || [];
+                    if (cats.length === 0) {
+                        catContainer.innerHTML = '<p class="text-xs text-slate-500">No expenses recorded yet.</p>';
+                        return;
+                    }
+
+                    cats.forEach(c => {
+                        const div = document.createElement('div');
+                        div.className = 'space-y-1';
+                        div.innerHTML = `
+                            <div class="flex justify-between text-xs font-semibold">
+                                <span class="text-slate-300">${c.category} (${c.count} files)</span>
+                                <span class="text-emerald-400 font-mono">₹ ${(c.sum||0).toLocaleString('en-IN', {minimumFractionDigits: 2})}</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+                                <div class="h-full bg-gradient-to-r from-sky-500 to-emerald-500 rounded-full" style="width: ${Math.min(100, (c.count / (data.total_documents_processed || 1)) * 100)}%"></div>
+                            </div>
+                        `;
+                        catContainer.appendChild(div);
+                    });
+
+                } catch (err) {
+                    console.error('Analytics load error:', err);
+                }
+            }
+
+            // Initial History Pre-fetch
+            loadLedgerHistory();
         });
     </script>
 </body>
