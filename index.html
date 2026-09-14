@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuditDrop Pro - CA Firm AI Tax & Ledger Audit Portal</title>
+    <title>AuditDrop - CA Portal Tax & Ledger Extraction</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,18 +12,13 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#f0f7ff',
                             500: '#0284c7',
                             600: '#0369a1',
-                            700: '#075985',
                         },
                         ca: {
                             dark: '#090d16',
                             card: '#111827',
-                            border: '#1f2937',
-                            accent: '#38bdf8',
-                            emerald: '#10b981',
-                            amber: '#f59e0b'
+                            emerald: '#10b981'
                         }
                     },
                     fontFamily: {
@@ -37,10 +32,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tesseract.js CDN for Universal Browser-side OCR -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #090d16; }
         .glass-panel {
-            background: rgba(17, 24, 39, 0.75);
+            background: rgba(17, 24, 39, 0.85);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
@@ -59,38 +56,30 @@
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
 
-    <!-- Navbar -->
-    <header class="border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md sticky top-0 z-50">
+    <!-- Clean Header Navbar -->
+    <header class="border-b border-slate-800 bg-slate-950/90 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 via-indigo-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-sky-500/20">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/20">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                 </div>
-                <div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-sky-400 bg-clip-text text-transparent">AuditDrop Pro</span>
-                        <span class="px-2 py-0.5 text-[10px] font-bold bg-sky-500/10 text-sky-400 border border-sky-500/30 rounded-full uppercase tracking-wider">CA Firm Edition</span>
-                    </div>
-                </div>
+                <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-sky-400 bg-clip-text text-transparent">AuditDrop</span>
             </div>
 
-            <!-- Due Date Countdown & Assignment Tag -->
-            <div class="hidden md:flex items-center space-x-4">
+            <!-- Tax Deadline Badge -->
+            <div class="flex items-center space-x-3">
                 <div class="flex items-center space-x-2 px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-xs">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                     <span class="text-slate-400">GST R1/3B Due:</span>
                     <span class="font-bold text-emerald-400 font-mono" id="countdownTimer">15d 04h 22m</span>
                 </div>
-                <span class="px-3 py-1.5 text-xs font-semibold bg-slate-900 text-slate-300 border border-slate-800 rounded-lg">
-                    AI Immersion • BE.CSE 2nd Year
-                </span>
             </div>
         </div>
     </header>
 
-    <!-- Main Navigation Tabs -->
+    <!-- Navigation Tabs -->
     <div class="border-b border-slate-800/80 bg-slate-900/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-2 sm:space-x-6 overflow-x-auto">
             <button id="tabUpload" class="tab-btn px-4 py-3 text-sm font-bold border-b-2 border-sky-400 text-sky-400 flex items-center space-x-2">
@@ -118,7 +107,7 @@
             <div class="text-center space-y-2">
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Client Monthly Bill & Ledger AI Parser</h1>
                 <p class="text-slate-400 text-sm max-w-xl mx-auto">
-                    Upload purchase bills, receipts, or Excel spreadsheets. Our engine dynamically parses real text, numbers, dates, GSTINs, and line items.
+                    Upload purchase bills, receipts, or Excel spreadsheets. Our OCR engine parses real text, numbers, dates, GSTINs, and line items from any document.
                 </p>
             </div>
 
@@ -141,7 +130,7 @@
                         </div>
                     </div>
 
-                    <!-- Drag and Drop Box -->
+                    <!-- Drag and Drop Zone -->
                     <div class="space-y-2">
                         <label class="block text-sm font-semibold text-slate-200">
                             Upload Document or Excel Sheet <span class="text-sky-400">*</span>
@@ -152,7 +141,6 @@
                             
                             <input type="file" id="fileInput" name="file" accept="image/*,.pdf,.xlsx,.xls,.csv,.txt" class="hidden">
                             
-                            <!-- Default Drop Zone Content -->
                             <div id="dropZoneContent" class="space-y-3">
                                 <div class="w-14 h-14 mx-auto rounded-2xl bg-sky-500/10 group-hover:bg-sky-500/20 text-sky-400 flex items-center justify-center transition-colors">
                                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 0115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
@@ -167,7 +155,6 @@
                                 </div>
                             </div>
 
-                            <!-- File Selected Preview -->
                             <div id="filePreview" class="hidden flex items-center justify-between bg-slate-800/90 p-4 rounded-xl border border-slate-700 text-left">
                                 <div class="flex items-center space-x-3 truncate">
                                     <div class="w-10 h-10 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
@@ -205,8 +192,8 @@
                     </div>
                 </div>
                 <div>
-                    <h3 class="text-base font-bold text-white">Parsing File Contents & Extracting Ledger Entities...</h3>
-                    <p id="loadingStatusStep" class="text-xs text-sky-400 font-mono mt-1">Reading text, dates, numbers & GSTINs...</p>
+                    <h3 class="text-base font-bold text-white" id="loadingTitle">Running OCR & Document Parsing...</h3>
+                    <p id="loadingStatusStep" class="text-xs text-sky-400 font-mono mt-1">Reading actual text, numbers, dates & GSTINs...</p>
                 </div>
             </div>
 
@@ -220,9 +207,6 @@
                         </h2>
                         <p class="text-xs text-slate-400 mt-0.5" id="processedTimestamp">Processed --</p>
                     </div>
-                    <button id="toggleRawJsonBtn" class="text-xs font-semibold px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-sky-400 border border-slate-700 rounded-lg transition-colors">
-                        View Raw JSON
-                    </button>
                 </div>
 
                 <!-- Extraction Summary Grid -->
@@ -278,15 +262,6 @@
                         </table>
                     </div>
                 </div>
-
-                <!-- Raw JSON -->
-                <div id="rawJsonContainer" class="hidden glass-panel rounded-xl p-4 border border-slate-800 space-y-2">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-mono text-slate-400">JSON Payload</span>
-                        <button id="copyJsonBtn" class="text-xs font-semibold px-2.5 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/30 rounded">Copy JSON</button>
-                    </div>
-                    <pre id="rawJsonPre" class="bg-slate-950 p-4 rounded-lg text-emerald-400 font-mono text-xs overflow-x-auto border border-slate-900 max-h-80"></pre>
-                </div>
             </section>
 
         </div>
@@ -306,14 +281,12 @@
                 </div>
             </div>
 
-            <!-- Search Bar -->
             <div class="relative max-w-md">
                 <input type="text" id="ledgerSearchInput" placeholder="Search by Client Name, Vendor, or Category..."
                     class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500">
                 <svg class="w-4 h-4 text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
 
-            <!-- Ledger Database Table -->
             <div class="glass-panel rounded-xl overflow-hidden border border-slate-800">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs text-slate-300">
@@ -343,7 +316,6 @@
                 <p class="text-xs text-slate-400">Overview of total client expenses processed and claimable Input Tax Credit (ITC).</p>
             </div>
 
-            <!-- Stats Overview -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="glass-panel p-5 rounded-xl border border-slate-800 space-y-1">
                     <p class="text-xs font-semibold text-slate-400 uppercase">Total Submissions</p>
@@ -359,7 +331,6 @@
                 </div>
             </div>
 
-            <!-- Category Breakdown List -->
             <div class="glass-panel p-6 rounded-xl border border-slate-800 space-y-4">
                 <h3 class="text-sm font-bold text-slate-200">Category Expense Distribution</h3>
                 <div id="categoryContainer" class="space-y-3">
@@ -371,11 +342,10 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500 mt-auto">
-        <p>AuditDrop Pro • Designed for Chartered Accountant (CA) Firms • AI Immersion Assignment</p>
+    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-center text-xs text-slate-500 mt-auto">
+        <p>AuditDrop • Document Drop & AI Tax Extraction Portal</p>
     </footer>
 
-    <!-- Frontend Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
@@ -407,7 +377,7 @@
             tabLedger.addEventListener('click', () => setTab(tabLedger, viewLedger));
             tabAnalytics.addEventListener('click', () => setTab(tabAnalytics, viewAnalytics));
 
-            // --- Drag & Drop Setup ---
+            // --- Drag & Drop ---
             const dropZone = document.getElementById('dropZone');
             const dropZoneContent = document.getElementById('dropZoneContent');
             const fileInput = document.getElementById('fileInput');
@@ -461,26 +431,44 @@
                 filePreview.classList.remove('hidden');
             }
 
-            // --- Form Submission (Fetch API) ---
-            let lastJson = null;
-
+            // --- UNIVERSAL BROWSER OCR & FORM SUBMISSION ---
             uploadForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const clientName = document.getElementById('clientName').value.trim();
                 const file = fileInput.files[0];
 
                 if (!clientName || !file) {
-                    alert('Please provide both Client Name and a Document file.');
+                    alert('Please enter Client Name and upload a file.');
                     return;
+                }
+
+                setLoading(true, "Scanning document & running OCR...");
+                resultsSection.classList.add('hidden');
+                loadingState.classList.remove('hidden');
+
+                let extractedOcrText = "";
+
+                // If file is an image, run real browser Tesseract OCR
+                if (file.type.startsWith('image/')) {
+                    try {
+                        loadingStatusStep.textContent = "Performing Optical Character Recognition (OCR) on image...";
+                        const worker = await Tesseract.createWorker('eng');
+                        const ret = await worker.recognize(file);
+                        extractedOcrText = ret.data.text;
+                        await worker.terminate();
+                    } catch (ocrErr) {
+                        console.warn("Tesseract OCR fallback to raw file:", ocrErr);
+                    }
                 }
 
                 const formData = new FormData();
                 formData.append('client_name', clientName);
                 formData.append('file', file);
+                if (extractedOcrText) {
+                    formData.append('ocr_text', extractedOcrText);
+                }
 
-                setLoading(true);
-                resultsSection.classList.add('hidden');
-                loadingState.classList.remove('hidden');
+                loadingStatusStep.textContent = "Parsing extracted text, dates, numbers & GSTINs...";
 
                 try {
                     const res = await fetch('/upload', { method: 'POST', body: formData });
@@ -489,7 +477,6 @@
                         throw new Error(err.detail || 'Server error during upload');
                     }
                     const data = await res.json();
-                    lastJson = data;
                     renderResults(data);
                     loadLedgerHistory();
 
@@ -501,12 +488,12 @@
                 }
             });
 
-            function setLoading(isLoading) {
+            function setLoading(isLoading, text) {
                 submitBtn.disabled = isLoading;
                 if (isLoading) {
                     spinnerIcon.classList.remove('hidden');
                     sparkleIcon.classList.add('hidden');
-                    btnText.textContent = "Parsing & Extracting...";
+                    btnText.textContent = text || "Processing Document...";
                 } else {
                     spinnerIcon.classList.add('hidden');
                     sparkleIcon.classList.remove('hidden');
@@ -527,7 +514,7 @@
                 
                 const totalFormatted = ext.total_amount ? ext.total_amount.toLocaleString('en-IN', {minimumFractionDigits: 2}) : '0.00';
                 document.getElementById('resTotalAmount').textContent = `₹ ${totalFormatted}`;
-                document.getElementById('resTaxBreakdown').textContent = `CGST ₹${tax.cgst||0} + SGST ₹${tax.sgst||0} (${tax.gst_rate||'18%'})`;
+                document.getElementById('resTaxBreakdown').textContent = `CGST ₹${(tax.cgst||0).toLocaleString('en-IN')} + SGST ₹${(tax.sgst||0).toLocaleString('en-IN')} (${tax.gst_rate||'18%'})`;
 
                 document.getElementById('resCategory').textContent = ext.category || 'General';
                 document.getElementById('resConfidence').textContent = `AI Score: ${((ext.confidence_score||0.98)*100).toFixed(1)}%`;
@@ -550,22 +537,9 @@
                     lineTbody.appendChild(tr);
                 });
 
-                document.getElementById('rawJsonPre').textContent = JSON.stringify(data, null, 2);
                 resultsSection.classList.remove('hidden');
                 resultsSection.scrollIntoView({ behavior: 'smooth' });
             }
-
-            // Raw JSON Toggle & Copy
-            document.getElementById('toggleRawJsonBtn').addEventListener('click', () => {
-                document.getElementById('rawJsonContainer').classList.toggle('hidden');
-            });
-            document.getElementById('copyJsonBtn').addEventListener('click', () => {
-                if (lastJson) {
-                    navigator.clipboard.writeText(JSON.stringify(lastJson, null, 2));
-                    document.getElementById('copyJsonBtn').textContent = 'Copied!';
-                    setTimeout(() => document.getElementById('copyJsonBtn').textContent = 'Copy JSON', 2000);
-                }
-            });
 
             // --- Database History Functions ---
             async function loadLedgerHistory(searchQuery = '') {
@@ -616,12 +590,10 @@
                 }
             };
 
-            // Search listener
             document.getElementById('ledgerSearchInput').addEventListener('input', (e) => {
                 loadLedgerHistory(e.target.value.trim());
             });
 
-            // --- Analytics Load ---
             async function loadAnalytics() {
                 try {
                     const res = await fetch('/analytics');
@@ -660,7 +632,6 @@
                 }
             }
 
-            // Initial History Pre-fetch
             loadLedgerHistory();
         });
     </script>
