@@ -13,6 +13,10 @@ import sqlite3
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
 
+from fastapi import FastAPI, File, Form, UploadFile, HTTPException, Query
+from fastapi.responses import HTMLResponse, JSONResponse, Response
+from fastapi.middleware.cors import CORSMiddleware
+
 try:
     from PIL import Image
     PIL_AVAILABLE = True
@@ -166,7 +170,6 @@ def parse_uploaded_file(client_name: str, filename: str, content_bytes: bytes) -
             ]
             gst_rate_str = "12% (CGST 6% + SGST 6%)"
         else:
-            # Lotus Office Supplies default image
             vendor_name = "LOTUS OFFICE ESSENTIALS PVT LTD"
             vendor_gstin = "29AAACA4921A1Z4"
             invoice_number = "LOE/23-24/00567"
