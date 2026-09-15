@@ -91,7 +91,7 @@ pip install -r requirements.txt
 Start the Uvicorn ASGI server with live reloading enabled:
 
 ```bash
-uvicorn main:app --reload --host 127.0.0.1 --port 8000
+uvicorn main:app --reload --host 127.0.0.1 --port 8001
 ```
 
 ---
@@ -100,7 +100,7 @@ uvicorn main:app --reload --host 127.0.0.1 --port 8000
 
 Open your browser and navigate to:
 
-👉 **`http://127.0.0.1:8000`** (or `http://localhost:8000`)
+👉 **`http://127.0.0.1:8001`** (or `http://localhost:8001`)
 
 ---
 
